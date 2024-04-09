@@ -92,7 +92,7 @@ function Navbar() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
-                    <Link href="/dashboard">Dashboard</Link>
+                    <Link href="/user/profile">Profile</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
                     <Link href="/edgestore">edgestore</Link>
