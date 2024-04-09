@@ -3,9 +3,7 @@ import Image from 'next/image'
 import Link from 'next/link'
 import React from 'react'
 import SearchBar from './SearchBar'
-import TransitionalText from '../TransitionalText'
 import { Pill } from 'lucide-react'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
 
 const Hero = () => {
   const TEXTS = [
