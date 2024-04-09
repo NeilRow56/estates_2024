@@ -4,7 +4,7 @@ import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
 import * as z from 'zod'
 import { useTransition } from 'react'
-import { toast } from 'sonner'
+import { toast } from 'react-toastify'
 // import { passwordStrength } from 'check-password-strength'
 import { Input } from '@/components/ui/input'
 import {
@@ -24,10 +24,11 @@ import { PasswordInput } from './PasswordInput'
 import { RegisterSchema } from '@/schemas'
 import { Button } from '@/components/ui/button'
 import { register } from '@/actions/auth-actions/register'
+import { useRouter } from 'next/navigation'
 
 export const RegisterForm = () => {
   const [isPending, startTransition] = useTransition()
-
+  const router = useRouter()
   const form = useForm<z.infer<typeof RegisterSchema>>({
     resolver: zodResolver(RegisterSchema),
     defaultValues: {
@@ -50,6 +51,7 @@ export const RegisterForm = () => {
 
           if (data?.success) {
             form.reset()
+            router.push('/login')
             toast.success(data.success)
           }
         })

@@ -19,8 +19,8 @@ import { PasswordInput } from './PasswordInput'
 import { useTransition } from 'react'
 import { useRouter } from 'next/navigation'
 import { signIn } from 'next-auth/react'
-import { toast } from 'sonner'
-import { Loader2, LogIn } from 'lucide-react'
+import { toast } from 'react-toastify'
+import { Loader2, LogIn, MailIcon } from 'lucide-react'
 import { Button } from '@/components/ui/button'
 import { LoginSchema } from '@/schemas'
 
@@ -52,6 +52,7 @@ export const LoginForm = ({ callbackUrl }: LoginFormProps) => {
     }
     startTransition(() => {
       router.push(callbackUrl ? callbackUrl : '/dashboard')
+      router.refresh()
     })
     toast.success('Welcome To WP Auth 2024')
   }
@@ -77,6 +78,7 @@ export const LoginForm = ({ callbackUrl }: LoginFormProps) => {
                       placeholder="john.doe@example.com"
                       type="email"
                       disabled={isPending}
+                      suffix={<MailIcon />}
                     />
                   </FormControl>
                   <FormMessage />

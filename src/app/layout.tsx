@@ -2,8 +2,9 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 import { ThemeProvider } from '@/providers/ThemeProvider'
-import { Toaster } from 'sonner'
+
 import { AuthProvider } from '@/providers/AuthProvider'
+import { ToastContainer } from 'react-toastify'
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -28,16 +29,17 @@ export default function RootLayout({
             disableTransitionOnChange
           >
             {children}
-            <Toaster
-              toastOptions={{
-                unstyled: true,
-                classNames: {
-                  error: 'bg-red-400',
-                  success: 'text-green-400',
-                  warning: 'text-yellow-400',
-                  info: 'bg-blue-400',
-                },
-              }}
+            <ToastContainer
+              position="top-right"
+              autoClose={5000}
+              hideProgressBar={false}
+              newestOnTop={false}
+              closeOnClick
+              rtl={false}
+              pauseOnFocusLoss
+              draggable
+              pauseOnHover
+              theme="light"
             />
           </ThemeProvider>
         </AuthProvider>
