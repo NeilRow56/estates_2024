@@ -3,7 +3,7 @@
 import { ThemeToggle } from '../dashboard-layout/ThemeToggle'
 import { Button } from '../ui/button'
 import Link from 'next/link'
-import { HeartOffIcon, LogOut } from 'lucide-react'
+import { LogOut } from 'lucide-react'
 import {
   DropdownMenu,
   DropdownMenuContent,
