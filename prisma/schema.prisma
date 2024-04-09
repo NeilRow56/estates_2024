@@ -1,0 +1,112 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+enum UserRole {
+  USER
+  ADMIN
+  }
+
+model User {
+  id        String @id @default(auto()) @map("_id") @db.ObjectId
+  firstName String
+  lastName  String
+  role      UserRole   @default(USER)
+  email     String     @unique
+  password  String
+  colorScheme     String        @default("theme-orange")
+  avatarUrl String?
+  sessions        Session[]
+  createdAt DateTime   @default(now())
+  updatedAt       DateTime @updatedAt
+  Property  Property[]
+}
+
+model Session {
+  id           String @id @default(auto()) @map("_id") @db.ObjectId
+  sessionToken String   @unique
+  userId       String  @db.ObjectId
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Property {
+  id          String          @id @default(auto()) @map("_id") @db.ObjectId
+  name        String
+  description String
+  price       Int
+  userId      String           @db.ObjectId
+  user        User             @relation(fields: [userId], references: [id])
+  typeId      String           @db.ObjectId    
+  type        PropertyType     @relation(fields: [typeId], references: [id])
+  statusId    String           @db.ObjectId
+  status      PropertyStatus   @relation(fields: [statusId], references: [id])
+  location    PropertyLocation?
+  feature     PropertyFeature?
+  images      PropertyImage[]
+  contact     Contact?
+}
+
+model Contact {
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  name       String
+  phone      String
+  email      String
+  Property   Property?          @relation(fields: [propertyId], references: [id])
+  propertyId String             @unique @db.ObjectId
+}
+
+model PropertyImage {
+  id         String             @id @default(auto()) @map("_id") @db.ObjectId
+  url        String
+  property   Property           @relation(fields: [propertyId], references: [id])
+  propertyId String             @db.ObjectId
+}
+
+model PropertyFeature {
+  id              String        @id @default(auto()) @map("_id") @db.ObjectId
+  bedrooms        Int
+  bathrooms       Int
+  parkingSpots    Int
+  area            Int
+  hasSwimmingPool Boolean
+  hasGardenYard   Boolean
+  hasBalcony      Boolean
+  Property        Property       @relation(fields: [propertyId], references: [id])
+  propertyId      String         @unique @db.ObjectId
+}
+
+model PropertyLocation {
+  id              String          @id @default(auto()) @map("_id") @db.ObjectId
+  streedAddress String
+  city          String
+  state         String
+  zip           String
+  region        String
+  landmark      String
+  propertyId    String            @unique  @db.ObjectId
+  Property      Property          @relation(fields: [propertyId], references: [id])
+}
+
+model PropertyType {
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
+  value         String
+  Property Property[]
+}
+
+model PropertyStatus {
+  id            String            @id @default(auto()) @map("_id") @db.ObjectId
+  value         String
+  Property Property[]
+}
