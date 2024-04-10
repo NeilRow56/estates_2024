@@ -1,4 +1,6 @@
 import SectionHeading from '@/components/frontend/SectionHeading'
+import UploadAvatar from '@/components/frontend/UploadAvatar'
+import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { getUserById } from '@/data/user'
 
@@ -18,7 +20,16 @@ const Profile = async () => {
       <div className="mx auto container">
         <Card className="">
           <div className="p-4">
-            <SectionHeading title="Profile" />
+            <SectionHeading title="Basic Information" />
+          </div>
+          <div className="flex">
+            <div className="flex flex-col items-center">
+              <Avatar className="h-16 w-16 ">
+                <AvatarImage src={dbUser?.avatarUrl ?? '/profile.png'} />
+                <AvatarFallback>CN</AvatarFallback>
+              </Avatar>
+              <UploadAvatar />
+            </div>
           </div>
           <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">
             <Attribute
