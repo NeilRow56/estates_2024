@@ -44,12 +44,48 @@ const UploadAvatar = () => {
         <DialogTrigger asChild>
           <Button variant="outline" size="sm">
             <Pencil className=" w-6 text-slate-400 transition-colors hover:text-primary" />
-            <h3 className="pl-1">Edit</h3>
+            <span className="pl-1">Edit</span>
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle>Upload Avatar</DialogTitle>
+            <DialogTitle className="space-y-2">
+              <span className="">Upload Avatar</span>
+
+              <MultiFileDropzone
+                value={fileStates}
+                onChange={(files) => {
+                  setFileStates(files)
+                }}
+                onFilesAdded={async (addedFiles) => {
+                  setFileStates([...fileStates, ...addedFiles])
+                  await Promise.all(
+                    addedFiles.map(async (addedFileState) => {
+                      try {
+                        const res = await edgestore.publicFiles.upload({
+                          file: addedFileState.file,
+                          onProgressChange: async (progress) => {
+                            updateFileProgress(addedFileState.key, progress)
+                            if (progress === 100) {
+                              // wait 1 second to set it to complete
+                              // so that the user can see the progress bar at 100%
+                              await new Promise((resolve) =>
+                                setTimeout(resolve, 1000)
+                              )
+                              updateFileProgress(addedFileState.key, 'COMPLETE')
+                            }
+                          },
+                        })
+                        //           console.log(res)
+                        setFileUrls((prevUrls) => [...prevUrls, res.url])
+                      } catch (err) {
+                        updateFileProgress(addedFileState.key, 'ERROR')
+                      }
+                    })
+                  )
+                }}
+              />
+            </DialogTitle>
             <DialogDescription>
               {/* <FileInput
                 className="mb-3"
@@ -64,48 +100,6 @@ const UploadAvatar = () => {
                   src={URL.createObjectURL(image)}
                 />
               )} */}
-
-              <div className="  mt-8 flex  flex-col">
-                <h2 className="mb-2 text-xl font-bold">Multi File Upload</h2>
-                <div className="mx-auto">
-                  <MultiFileDropzone
-                    value={fileStates}
-                    onChange={(files) => {
-                      setFileStates(files)
-                    }}
-                    onFilesAdded={async (addedFiles) => {
-                      setFileStates([...fileStates, ...addedFiles])
-                      await Promise.all(
-                        addedFiles.map(async (addedFileState) => {
-                          try {
-                            const res = await edgestore.publicFiles.upload({
-                              file: addedFileState.file,
-                              onProgressChange: async (progress) => {
-                                updateFileProgress(addedFileState.key, progress)
-                                if (progress === 100) {
-                                  // wait 1 second to set it to complete
-                                  // so that the user can see the progress bar at 100%
-                                  await new Promise((resolve) =>
-                                    setTimeout(resolve, 1000)
-                                  )
-                                  updateFileProgress(
-                                    addedFileState.key,
-                                    'COMPLETE'
-                                  )
-                                }
-                              },
-                            })
-                            console.log(res)
-                            setFileUrls((prevUrls) => [...prevUrls, res.url])
-                          } catch (err) {
-                            updateFileProgress(addedFileState.key, 'ERROR')
-                          }
-                        })
-                      )
-                    }}
-                  />
-                </div>
-              </div>
             </DialogDescription>
           </DialogHeader>
 
