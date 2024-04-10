@@ -65,6 +65,9 @@ function DashboardNavbar() {
                   </DropdownMenuItem>
                   <DropdownMenuSeparator />
                   <DropdownMenuItem>
+                    <Link href="/user/profile">Profile</Link>
+                  </DropdownMenuItem>
+                  <DropdownMenuItem>
                     <Link href="/dashboard">Dashboard</Link>
                   </DropdownMenuItem>
                   <DropdownMenuItem>
