@@ -25,6 +25,7 @@ model User {
   role      UserRole   @default(USER)
   email     String     @unique
   password  String
+  posts         Post[]
   colorScheme     String        @default("theme-orange")
   avatarUrl String?
   sessions        Session[]
@@ -109,4 +110,17 @@ model PropertyStatus {
   id            String            @id @default(auto()) @map("_id") @db.ObjectId
   value         String
   Property Property[]
+}
+
+model Post {
+    id          String @id @default(auto()) @map("_id") @db.ObjectId
+    createdAt DateTime    @default(now())
+    updatedAt DateTime    @updatedAt
+    caption   String?
+    fileUrl   String      @unique
+   
+    user      User        @relation(fields: [userId], references: [id], onDelete: Cascade)
+    userId String @db.ObjectId
+
+    @@index([userId])
 }

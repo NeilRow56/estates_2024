@@ -1,5 +1,6 @@
 import SectionHeading from '@/components/frontend/SectionHeading'
-import UploadAvatar from '@/components/frontend/UploadAvatar'
+import UploadAvatarTwo from '@/components/frontend/UploadAvatarTwo'
+
 import { Avatar, AvatarFallback, AvatarImage } from '@/components/ui/avatar'
 import { Card } from '@/components/ui/card'
 import { getUserById } from '@/data/user'
@@ -28,7 +29,7 @@ const Profile = async () => {
                 <AvatarImage src={dbUser?.avatarUrl ?? '/profile.png'} />
                 <AvatarFallback>CN</AvatarFallback>
               </Avatar>
-              <UploadAvatar />
+              <UploadAvatarTwo />
             </div>
           </div>
           <div className="grid grid-cols-1 gap-4 p-4 md:grid-cols-2 lg:grid-cols-3">

@@ -34,6 +34,10 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'unsplash.com',
       },
+      {
+        protocol: 'https',
+        hostname: 'files.edgestore.dev',
+      },
     ],
   },
 }
